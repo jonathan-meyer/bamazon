@@ -5,7 +5,8 @@ const Data = require("./lib/Data");
   const data = new Data();
   const products = await data.products();
   const table = new Table({
-    head: ["Id", "Name", "Dept", "Price", "Qty"]
+    head: ["Id", "Name", "Dept", "Price", "Qty"],
+    colAligns: [, , , "right", "right"]
   });
 
   products.map(product => {
@@ -13,7 +14,7 @@ const Data = require("./lib/Data");
       product.id,
       product.name,
       product.department,
-      product.price,
+      product.priceFormated,
       product.quantity
     ]);
   });
