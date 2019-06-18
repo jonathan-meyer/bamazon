@@ -4,7 +4,10 @@
   "description": "Poorly named homework assignment.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "customer": "node bamazonCustomer.js",
+    "manager": "node bamazonManager.js",
+    "supervisor": "node bamazonSupervisor.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
     "blessed": "^0.1.81",
     "chalk": "^2.4.2",
     "cli-table": "^0.3.1",
+    "cowsay": "^1.4.0",
     "dotenv": "^8.0.0",
     "inquirer": "^6.3.1",
     "mysql": "^2.17.1"
