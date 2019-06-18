@@ -48,7 +48,7 @@ const receiptTable = receipt => {
   const { product, units } = await inquirer.prompt([
     {
       name: "product",
-      message: "Which product do you want to buy:",
+      message: "Which product do you want to buy? Enter ID:",
       filter: input =>
         products.filter(product => product.id === Number(input)).pop(),
       validate: input =>
@@ -57,9 +57,9 @@ const receiptTable = receipt => {
     },
     {
       name: "units",
-      message: "How many do you want to buy:",
+      message: "How many do you want to buy? Enter Quantity:",
       validate: (input, answers) =>
-        answers.product.quantity >= Number(input)
+        Number(input) > 0 && answers.product.quantity >= Number(input)
           ? true
           : "We don't have that many in stock."
     }
