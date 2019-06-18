@@ -1,13 +1,11 @@
 const Table = require("cli-table");
 const inquirer = require("inquirer");
+const chalk = require("chalk");
 
 const Data = require("./lib/Data");
 const Product = require("./lib/Product");
 
-(async () => {
-  const data = new Data();
-  const products = await data.products();
-
+const productsTable = products => {
   const table = new Table({
     head: ["Id", "Name", "Dept", "Price", "Qty"],
     colAligns: [, , , "right", "right"]
@@ -23,10 +21,28 @@ const Product = require("./lib/Product");
     ]);
   });
 
-  console.log(Number("1"), 1, Number("1") === 1);
+  return table.toString();
+};
 
-  // display the table
-  console.log(table.toString());
+const receiptTable = receipt => {
+  const table = new Table();
+
+  table.push(
+    { Item: receipt.item },
+    { Price: receipt.priceFormated },
+    { Quantity: receipt.quantity },
+    { Total: receipt.totalFormated }
+  );
+
+  return table.toString();
+};
+
+(async () => {
+  const data = new Data();
+  const products = await data.products();
+
+  // display the current products
+  console.log(productsTable(products));
 
   // prompt for product to buy
   const { product, units } = await inquirer.prompt([
@@ -37,7 +53,7 @@ const Product = require("./lib/Product");
         products.filter(product => product.id === Number(input)).pop(),
       validate: input =>
         input instanceof Product ? true : "Cannot find that product.",
-      transformer: input => input.name || input
+      transformer: input => (input.name ? chalk.cyan(input.name) : input)
     },
     {
       name: "units",
@@ -49,5 +65,7 @@ const Product = require("./lib/Product");
     }
   ]);
 
-  console.log({ product, units });
+  console.log(receiptTable(await data.buy(product.id, units)));
+
+  data.end();
 })();
